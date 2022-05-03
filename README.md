@@ -26,5 +26,5 @@ Tasks:
 - [ ] Cemove functions that were neccesary when program was console based (after GUI is finished)
 - [ ] Add support for more file types  
 
-### Other
+## Other
 Have an idea for a feature? Create an issue with your suggestion, and it might get added! ;)
