@@ -7,7 +7,7 @@ This command can be used:
 
 `python3 ./AssignmentSheetReader.py <file location>`
 
-file location must be supplied with the full file path, including drive name, and file extension  
+File location must be supplied with the full file path, including drive name, and file extension  
 Example: `C:\Users\<user>\Doccuments\file.docx`  
 Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
@@ -17,8 +17,8 @@ Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
 ### Development Roadmap:
 Tasks:  
-- [x] Create function to verify that desired file exists, and is supported
-- [ ] Create function to access and open requested file
+- [x] Create function to verify that desired file exists, and is supported [**Finished 5/3/2022**]
+- [ ] Create function to access and open requested file 
 - [ ] Create Function to parse file and collect all assignments
 - [ ] Create Function to add all assigments to a file of choice (.docx or .csv)
 - [ ] Allow for windows "open with" menu to open a file using this program
