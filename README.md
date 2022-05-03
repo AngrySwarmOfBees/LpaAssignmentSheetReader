@@ -16,7 +16,11 @@ Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
 ### Development Roadmap:
 Tasks:  
-- [ ] Create function to locate file and open it
+- [x] Create function to verify that desired file exists, and is supported
+- [ ] create function to access and open file
 - [ ] Create Function to parse file and collect all assignments
 - [ ] Create Function to add all assigments to a file of choice (.docx or .csv)
 - [ ] Allow for windows "open with" menu to open a file using this program
+- [ ] Create GUI for program (graphical user interface)
+- [ ] remove functions that were neccesary when program was console based (after GUI is finished)
+- [ ] add support for more file types
