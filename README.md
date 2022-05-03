@@ -22,5 +22,5 @@ Tasks:
 - [ ] Create Function to add all assigments to a file of choice (.docx or .csv)
 - [ ] Allow for windows "open with" menu to open a file using this program
 - [ ] Create GUI for program (graphical user interface)
-- [ ] remove functions that were neccesary when program was console based (after GUI is finished)
-- [ ] add support for more file types
+- [ ] Cemove functions that were neccesary when program was console based (after GUI is finished)
+- [ ] Add support for more file types
