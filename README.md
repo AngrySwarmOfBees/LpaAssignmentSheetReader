@@ -13,6 +13,7 @@ Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
 ## Development Status:
 - 5/3/2022: Program is not opperational yet
+- 5/3/2022 (part 2): Program is not opperational yet, but now can verify that the requested file exists, and that it is a supported type
 
 ### Development Roadmap:
 Tasks:  
