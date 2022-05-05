@@ -78,15 +78,9 @@ def GetDoccumentData():
                     TempAssignmentStr = TempAssignmentStr + r.text + "\n"  #add cell's text to temp str
             Assignments.append(TempAssignmentStr)
     for i in Assignments:
-        print(i)
+        print(i)        #remove in release
                     
                     
                     
 
 GetDoccumentData()
-
-
-
-    
-
-#DOCX file setup
