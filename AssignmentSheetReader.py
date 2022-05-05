@@ -1,6 +1,7 @@
 #this is a system that when supplied with a Logos prep assignment sheet, can read out assignment sheets and do multiple things with that data
 
 #setting up packages
+from ast import Assign
 from asyncio.windows_events import NULL
 from types import NoneType
 import docx
@@ -16,7 +17,13 @@ SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that
 FileInput = "" #String, Contains both the file name and file extension      -now unnessecary
 NoFileErrors = True
 global DocumentRef
+global IsAssignmentRow
+global Assignments
+global TempAssignmentStr
 DocumentRef = NoneType
+IsAssignmentRow = True
+Assignments = []
+TempAssignmentStr = ""
 
 #collecting launch arg data
 LaunchArgument = str(sys.argv[1])
@@ -56,12 +63,25 @@ OpenFile()
 
 #Reading out file info
 def GetDoccumentData():
-    global DocumentRef
-    for p in DocumentRef.tables:
-        for q in p.rows:
-            for r in q.cells:
-                for s in r.paragraphs:
-                    print(s.text)
+    global DocumentRef      #Defining var as global
+    global Assignments      #Defining var as global
+    global TempAssignmentStr        #Defining var as global
+    for p in DocumentRef.tables:    #Runs through all tables in doccument
+        for q in p.rows:        #runs through all rows in each table
+            TempAssignmentStr = ""      #clears temp var
+            IsAssignmentRow = False   
+            for r in q.cells:   #reads thru each cell
+                if "Assignments/ Instructions" in r.text:   #if the first cell says "Assignments/ Instructions" then add whole row to array
+                    IsAssignmentRow = True
+                if IsAssignmentRow == True:
+                    #print(r.text)       #remove in release
+                    TempAssignmentStr = TempAssignmentStr + r.text + "\n"  #add cell's text to temp str
+            Assignments.append(TempAssignmentStr)
+    for i in Assignments:
+        print(i)
+                    
+                    
+                    
 
 GetDoccumentData()
 
