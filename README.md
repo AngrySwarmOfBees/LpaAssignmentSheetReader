@@ -30,3 +30,9 @@ Tasks:
 
 ## Other
 Have an idea for a feature? Create an issue with your suggestion, and it might get added! ;)
+
+## Dev notes
+### Functions:
+ - CheckForFile() - this function verifies that the given file path exists
+ - CheckIfIsSupported() - this function verifies that the file type is supported
+ - OpenFile() - This function only runs if there are no file errors, this prepares the file to be read out
