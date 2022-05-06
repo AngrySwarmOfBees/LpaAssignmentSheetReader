@@ -36,3 +36,6 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - CheckForFile() - this function verifies that the given file path exists
  - CheckIfIsSupported() - this function verifies that the file type is supported
  - OpenFile() - This function only runs if there are no file errors, this prepares the file to be read out
+ - GetDocumentData() - Reads out file data and sorts it into the correct arrays
+ - ParseDocumentData() - Removes unwanted data and combines Assignments and Dates into a dictionary
+ - 
