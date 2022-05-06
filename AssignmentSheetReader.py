@@ -1,5 +1,6 @@
 #this is a system that when supplied with a Logos prep assignment sheet, can read out assignment sheets and do multiple things with that data
 
+
 #setting up packages
 from ast import Assign
 from asyncio.windows_events import NULL
@@ -100,11 +101,11 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
     global Dates        #Allows for function to access var
     global AssignmentsAndDueDates       #Allows for function to access var
     for a in Dates:     #clears empty strings
-        if a == '':
+        if a == '':     #This removes empty string
             Dates.remove(a)
-        if a == "":
+        if a == "":     #this also removes empty Strings, not all get removed for some reason idk
             Dates.remove(a)
-    for b in Assignments:       #clears empty strings
+    for b in Assignments:       #clears empty strings, and ¨Assignments/ Instructions" 
         if b == "Assignments/ Instructions":
             Assignments.remove(b)
         if b == '':
@@ -115,6 +116,6 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
 GetDocumentData()
 ParseDocumentData()
 
-for c in AssignmentsAndDueDates:
+for c in AssignmentsAndDueDates:        #Remove in release, this prints out data from the dictionary 
     print(c + "     " + AssignmentsAndDueDates[c])
     print("\n")
