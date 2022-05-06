@@ -15,6 +15,7 @@ Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 - 5/3/2022: Program is not opperational yet
 - 5/3/2022 (part 2): Program is not opperational yet, but now can verify that the requested file exists, and that it is a supported type
 - 5/5/2022: Program now can open the requested file, and read it, then detects when a row contains the string "Assignments/ Instructions", and then prints the entire rows information out to the console, cleaned up previous work (2 hours work)
+- 5/5/2022 (part 2): Now removes empty strings, and combines the list of assignments and list of due dates into a dictionary (1 hours work)
 
 ### Development Roadmap:
 Tasks:  
