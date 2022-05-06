@@ -5,10 +5,11 @@ This is a summer hobby project written in python, the purpose of this project is
 To use this program in its non-executable form, the program needs to be launched from a console:
 This command can be used: 
 
-`python3 ./AssignmentSheetReader.py <file location>`
+`python3 ./AssignmentSheetReader.py <file location> <subject>`
 
 File location must be supplied with the full file path, including drive name, and file extension  
 Example: `C:\Users\<user>\Doccuments\file.docx`  
+Subject is the class that the assignment sheet is from, to allow for sorting
 Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
 ## Development Status:
