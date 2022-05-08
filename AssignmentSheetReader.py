@@ -4,13 +4,18 @@
 #setting up packages
 from ast import Assign
 from asyncio.windows_events import NULL
+from importlib.util import LazyLoader
 from operator import truediv
 from types import NoneType
 import docx
 from docx import Document
 import sys
 from pathlib import Path
-from dateutil.parser import parse   
+from dateutil.parser import parse
+import tkinter as tk
+from tkinter import ttk
+from tkinter import *
+
 
 
 #setting up vars
@@ -34,15 +39,30 @@ AssignmentsAndDueDates = {      #This will be used to hold each assignment and i
     "" : ""
 }
 
+#setting up GUI
+Window = tk.Tk()
+Window.title("Lpa assignment sheet tool")
+Window.geometry('960x540+50+50')
+Window.configure(bg="#202020")
+menubar = Menu(Window, background="red")
+Window.config(menu=menubar)
+fileMenu = Menu(menubar)
+fileMenu.add_command(label="Exit")
+menubar.add_cascade(label="File", menu=fileMenu)
+Window.mainloop()
+
 #collecting launch arg data
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
+LaunchArgumentSubject = str(sys.argv[2])      #FIX BEFORE RELEASE! this grabs the subject name passed as a launch argument  
 print(LaunchArgument)   #output (remove in release)
+print(LaunchArgumentSubject) #output (remove in release)
 
-#Parsing The provided File name
+#Parsing The provided File name and subject
 DocPath = Path(LaunchArgument)      #initializes a path refrence to the given file
 FileInfo = LaunchArgument.split(".")        #creates an array containing the split string, the latter half of the split string is the file extension
 FileType = FileInfo[1]  #saving file extension
 print(FileType)     #output(remove in release)
+LaunchArgumentSubject = " (" + LaunchArgumentSubject + ") "
 
 #Checking that file type is supported, and that file exists
 def CheckForFile():
@@ -113,9 +133,10 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
     for i in Assignments:
         AssignmentsAndDueDates[i] = Dates[Assignments.index(i)]
 
+
 GetDocumentData()
 ParseDocumentData()
 
 for c in AssignmentsAndDueDates:        #Remove in release, this prints out data from the dictionary 
-    print(c + "     " + AssignmentsAndDueDates[c])
+    print(c + LaunchArgumentSubject + "     " + AssignmentsAndDueDates[c])
     print("\n")
