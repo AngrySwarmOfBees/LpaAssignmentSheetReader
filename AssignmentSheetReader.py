@@ -22,6 +22,7 @@ from tkinter import *
 from tkinter import filedialog as fd
 from tkinter import simpledialog as sd
 from tkinter import messagebox as mb
+import tkinter.font as TkFont
 
 
 
@@ -39,6 +40,8 @@ global FileType
 global FileInfo
 global Subject
 global NoFileErrors
+global SideBarTextHeight
+global IsDevModeActive
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -52,7 +55,8 @@ TempAssignmentStr = ""      #This string is used to hold information from each c
 AssignmentsAndDueDates = {      #This will be used to hold each assignment and its cooresponding due date
     "" : ""
 }
-
+SideBarTextHeight = 40
+IsDevModeActive = False
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -62,14 +66,9 @@ print(LaunchArgumentSubject) #output (remove in release)
 '''
 
 #Parsing The provided File name and subject
-
-'''
-DocPath = Path(LaunchArgument)      #initializes a path refrence to the given file
-FileInfo = LaunchArgument.split(".")        #creates an array containing the split string, the latter half of the split string is the file extension
-FileType = FileInfo[1]  #saving file extension
-print(FileType)     #output(remove in release)
-LaunchArgumentSubject = " (" + LaunchArgumentSubject + ") "
-'''
+LaunchArgument = str(sys.argv[1])
+if LaunchArgument == "Dev-Mode":
+    IsDevModeActive = True
 
 #Checking that file type is supported, and that file exists
 def CheckForFile():
@@ -137,9 +136,11 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
         AssignmentsAndDueDates[i] = Dates[Assignments.index(i)]
 def GetSubject():
     global Subject
+    global SideBarTextHeight
     Subject = sd.askstring(title="Choose Subject", prompt="Please type the name of the subject this assignment sheet pertains to: ")
-    RightSideBar.create_text(100, 100, text=Subject, fill="#bb86fc", anchor=tk.CENTER)
+    RightSideBar.create_text(135, SideBarTextHeight, text=Subject, fill="#bb86fc", font=BodyFont)
     Subject = " (" + Subject + ") "
+    SideBarTextHeight = SideBarTextHeight + 20
 
 def FileDialog():
     global LaunchArgument
@@ -159,18 +160,33 @@ def FileDialog():
 
     
 #setting up GUI
-Window = tk.Tk()
-Window.title("Lpa assignment sheet tool")
-Window.geometry('960x540+50+50')
-Window.configure(bg="#202020")
-menubar = Menu(Window)
-Window.config(menu=menubar)
-fileMenu = Menu(menubar)
-fileMenu.add_command(label="Open File", command=FileDialog)
-fileMenu.add_command(label="Exit")
-menubar.add_cascade(label="File", menu=fileMenu)
-RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")
-RightSideBar.pack(side=RIGHT)
+Window = tk.Tk()    #setup window
+HeaderFont = TkFont.Font(family="SF Pro Display", size=16, weight="bold")     #Initialize Font standard for headers
+BodyFont = TkFont.Font(family="San Fransisco", size=14, weight="normal")    #initialize font standard for body text
+Window.title("Lpa assignment sheet tool")   #set window title
+Window.geometry('960x540+50+50')    #set window default size
+Window.configure(bg="#1f1f1f")  #set background color(default dark mode)
+menubar = Menu(Window)  #setup menu bar
+Window.config(menu=menubar)     #Add menu bar to window
+fileMenu = Menu(menubar)       #add "File" menu to menu bar
+fileMenu.add_command(label="Open File", command=FileDialog)     #add "Open File" button to file menu
+fileMenu.add_command(label="Exit")      #Add "exit" button to file menu
+menubar.add_cascade(label="File", menu=fileMenu)    #set up file menu
+RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")     #create right side bar
+RightSideBar.pack(side=RIGHT)       #add right side bar to the window
+RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
+
+#Dev Menu Setup
+if IsDevModeActive == True:
+    DevMenu = Menu(menubar)
+    DevMenu.add_command(label="Add Subject", command=GetSubject)
+    DevMenu.add_command(label="Unused")
+    DevMenu.add_command(label="Unused")
+    DevMenu.add_command(label="Unused")
+    menubar.add_cascade(label="Dev Tools", menu=DevMenu)
+
+
+
 Window.mainloop()
 
 
