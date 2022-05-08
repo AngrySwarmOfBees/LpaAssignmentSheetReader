@@ -5,10 +5,11 @@ This is a summer hobby project written in python, the purpose of this project is
 To use this program in its non-executable form, the program needs to be launched from a console:
 This command can be used: 
 
-`python3 ./AssignmentSheetReader.py <file location>`
+`python3 ./AssignmentSheetReader.py <file location> <subject>`
 
 File location must be supplied with the full file path, including drive name, and file extension  
 Example: `C:\Users\<user>\Doccuments\file.docx`  
+Subject is the class that the assignment sheet is from, to allow for sorting
 Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
 ## Development Status:
@@ -20,12 +21,12 @@ Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 ### Development Roadmap:
 Tasks:  
 - [x] Create function to verify that desired file exists, and is supported [**Finished 5/3/2022**]
-- [x] Create function to access and open requested file 
-- [x] Create Function to parse file and collect all assignments
+- [x] Create function to access and open requested file [**Finished 5/5/2022**]
+- [x] Create Function to parse file and collect all assignments [**Finished 5/5/2022**]
 - [ ] Create Function to add all assigments to a file of choice (.docx or .csv)
 - [ ] Allow for windows "open with" menu to open a file using this program
 - [ ] Create GUI for program (graphical user interface)
-- [ ] Cemove functions that were neccesary when program was console based (after GUI is finished)
+- [ ] Remove functions that were neccesary when program was console based (after GUI is finished)
 - [ ] Add support for more file types  
 
 ## Other
@@ -36,3 +37,6 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - CheckForFile() - this function verifies that the given file path exists
  - CheckIfIsSupported() - this function verifies that the file type is supported
  - OpenFile() - This function only runs if there are no file errors, this prepares the file to be read out
+ - GetDocumentData() - Reads out file data and sorts it into the correct arrays
+ - ParseDocumentData() - Removes unwanted data and combines Assignments and Dates into a dictionary
+ - 
