@@ -9,7 +9,7 @@ from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
 from tkinter.messagebox import OKCANCEL, askretrycancel
-from turtle import bgcolor
+from turtle import bgcolor, right
 from types import NoneType
 import docx
 from docx import Document
@@ -138,6 +138,7 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
 def GetSubject():
     global Subject
     Subject = sd.askstring(title="Choose Subject", prompt="Please type the name of the subject this assignment sheet pertains to: ")
+    RightSideBar.create_text(100, 100, text=Subject, fill="#bb86fc", anchor=tk.CENTER)
     Subject = " (" + Subject + ") "
 
 def FileDialog():
@@ -168,6 +169,8 @@ fileMenu = Menu(menubar)
 fileMenu.add_command(label="Open File", command=FileDialog)
 fileMenu.add_command(label="Exit")
 menubar.add_cascade(label="File", menu=fileMenu)
+RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")
+RightSideBar.pack(side=RIGHT)
 Window.mainloop()
 
 
