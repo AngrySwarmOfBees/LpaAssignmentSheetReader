@@ -7,7 +7,7 @@ This is a summer hobby project written in python, the purpose of this project is
 - 5/5/2022: Program now can open the requested file, and read it, then detects when a row contains the string "Assignments/ Instructions", and then prints the entire rows information out to the console, cleaned up previous work (2 hours work)
 - 5/5/2022 (part 2): Now removes empty strings, and combines the list of assignments and list of due dates into a dictionary (1 hours work)
 - 5/8/2022: Now has a GUI, can open file and select Subject, does not add data to a list yet (2 hours work)
-- 5/8/2022 (part 2): Added constant stylizing, side bar is now functional, added dev menu, only accessable by using "Dev-Mode" as a launch argument
+- 5/8/2022 (part 2): Added constant stylizing, side bar is now functional, added dev menu, only accessable by using "Dev-Mode" as a launch argument (3 hours work)
 
 ### Development Roadmap:
 Tasks:  
