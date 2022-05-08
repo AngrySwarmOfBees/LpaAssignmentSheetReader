@@ -4,8 +4,12 @@
 #setting up packages
 from ast import Assign
 from asyncio.windows_events import NULL
+from fileinput import filename
 from importlib.util import LazyLoader
+from msilib.schema import File
 from operator import truediv
+from tkinter.messagebox import OKCANCEL, askretrycancel
+from turtle import bgcolor
 from types import NoneType
 import docx
 from docx import Document
@@ -15,21 +19,31 @@ from dateutil.parser import parse
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from tkinter import filedialog as fd
+from tkinter import simpledialog as sd
+from tkinter import messagebox as mb
 
 
 
 #setting up vars
-FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
-FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
-SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
-FileInput = "" #String, Contains both the file name and file extension      -now unnessecary
-NoFileErrors = True     #This bool is related to CheckForFile() and CheckIfIsSupported()
 global DocumentRef      #Defining as global var
 global IsAssignmentRow      #Defining as global var
 global Assignments      #Defining as global var
 global TempAssignmentStr        #Defining as global var
 global AssignmentsAndDueDates       #Defining as global var
 global Dates        #Defining as global var
+global LaunchArgument
+global DocPath
+global FileName
+global FileType
+global FileInfo
+global Subject
+global NoFileErrors
+FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
+FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
+SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
+FileInput = "" #String, Contains both the file name and file extension      -now unnessecary
+NoFileErrors = True     #This bool is related to CheckForFile() and CheckIfIsSupported()
 DocumentRef = NoneType      #This is defined as empty, but will be the var containing the refrence to the document file
 IsAssignmentRow = True      #This var is used to allow for removing everything that is not part of an assignment
 Assignments = []        #This list will contain all assignment tasks
@@ -39,46 +53,38 @@ AssignmentsAndDueDates = {      #This will be used to hold each assignment and i
     "" : ""
 }
 
-#setting up GUI
-Window = tk.Tk()
-Window.title("Lpa assignment sheet tool")
-Window.geometry('960x540+50+50')
-Window.configure(bg="#202020")
-menubar = Menu(Window, background="red")
-Window.config(menu=menubar)
-fileMenu = Menu(menubar)
-fileMenu.add_command(label="Exit")
-menubar.add_cascade(label="File", menu=fileMenu)
-Window.mainloop()
-
 #collecting launch arg data
+'''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
 LaunchArgumentSubject = str(sys.argv[2])      #FIX BEFORE RELEASE! this grabs the subject name passed as a launch argument  
 print(LaunchArgument)   #output (remove in release)
 print(LaunchArgumentSubject) #output (remove in release)
+'''
 
 #Parsing The provided File name and subject
+
+'''
 DocPath = Path(LaunchArgument)      #initializes a path refrence to the given file
 FileInfo = LaunchArgument.split(".")        #creates an array containing the split string, the latter half of the split string is the file extension
 FileType = FileInfo[1]  #saving file extension
 print(FileType)     #output(remove in release)
 LaunchArgumentSubject = " (" + LaunchArgumentSubject + ") "
+'''
 
 #Checking that file type is supported, and that file exists
 def CheckForFile():
+    global NoFileErrors
     if DocPath.is_file() == False:      #this will be replaced with a popup (when this program is given a GUI)
-        print("Error: " + LaunchArgument + " could not be found, please verify that the path is correct")
+        print("Error: " + FileName + " could not be found, please verify that the path is correct")
         NoFileErrors = False        #Since there are no errors, this allows the program to continue
-        exit()      #will not exit when program has GUI, will only allow to chose another path
+        #exit()      #will not exit when program has GUI, will only allow to chose another path
+        return NoFileErrors
 def CheckIfIsSupported():
     if SupportedFileTypes.__contains__(FileType) == False:      #this will be replaced with a popup (when this program is given a GUI)
         print("Error: " + FileType + " files are not currently supported")
         NoFileErrors = False        #Since there are no errors, this allows the program to continue
-        exit()      #will not exit when program has GUI, will only allow to chose another path
-
-CheckForFile()
-CheckIfIsSupported()
-
+        #exit()      #will not exit when program has GUI, will only allow to chose another path
+        return NoFileErrors
 #Accessing file
 def OpenFile():
     if NoFileErrors == True:        #will only run if there are no file errors
@@ -86,10 +92,7 @@ def OpenFile():
         DocumentRef = docx.Document(DocPath)      #opens the doccument and creates a variable that refrences it
     else:
         print("Error: file error")      #seccond warning, though this function should not even be able to be run in the first place if there is a file error
-        exit()      #will not exit when program has GUI, will throw pop up
-
-OpenFile()
-
+        #exit()      #will not exit when program has GUI, will throw pop up
 #Reading out file info and saving assignments and dates
 def GetDocumentData():
     global DocumentRef      #Allows for function to access var
@@ -132,11 +135,42 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
             Assignments.remove(b)
     for i in Assignments:
         AssignmentsAndDueDates[i] = Dates[Assignments.index(i)]
+def GetSubject():
+    global Subject
+    Subject = sd.askstring(title="Choose Subject", prompt="Please type the name of the subject this assignment sheet pertains to: ")
+    Subject = " (" + Subject + ") "
 
+def FileDialog():
+    global LaunchArgument
+    global DocPath
+    global FileName
+    global FileType
+    global FileInfo
+    FileName = fd.askopenfilename(
+        title='select an assignment sheet',
+        initialdir='/'
+    )
+    DocPath = Path(FileName)    #initializes a path refrence to the given file
+    FileInfo = FileName.split(".")   #creates an array containing the split string, the latter half of the split string is the file extension
+    FileType = FileInfo[1]  #saving file extension
+    print(FileType)
+    GetSubject()
 
-GetDocumentData()
-ParseDocumentData()
+    
+#setting up GUI
+Window = tk.Tk()
+Window.title("Lpa assignment sheet tool")
+Window.geometry('960x540+50+50')
+Window.configure(bg="#202020")
+menubar = Menu(Window)
+Window.config(menu=menubar)
+fileMenu = Menu(menubar)
+fileMenu.add_command(label="Open File", command=FileDialog)
+fileMenu.add_command(label="Exit")
+menubar.add_cascade(label="File", menu=fileMenu)
+Window.mainloop()
+
 
 for c in AssignmentsAndDueDates:        #Remove in release, this prints out data from the dictionary 
-    print(c + LaunchArgumentSubject + "     " + AssignmentsAndDueDates[c])
+    print(c + Subject + "     " + AssignmentsAndDueDates[c])
     print("\n")
