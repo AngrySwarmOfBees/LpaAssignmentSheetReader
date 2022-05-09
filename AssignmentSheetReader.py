@@ -1,13 +1,12 @@
-#this is a system that when supplied with a Logos prep assignment sheet, can read out assignment sheets and do multiple things with that data
+    #this is a system that when supplied with a Logos prep assignment sheet, can read out assignment sheets and do multiple things with that data
 
 
 #setting up packages
-
 from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
 from tkinter.messagebox import OKCANCEL, askretrycancel
-from turtle import bgcolor, color, right, width
+from turtle import bgcolor, color, left, right, width
 from types import NoneType
 from webbrowser import get
 import docx
@@ -163,8 +162,10 @@ def RightSideMenuExpand():
     global Width
     if Width == True:
         SideMenuPanel.config(width=200)
+        SideBarMenuButton.place(x=-75, y=0, relwidth="1", relheight=".1")
     else:
         SideMenuPanel.config(width=50)
+        SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
     Width = not Width
 
     
@@ -189,7 +190,7 @@ RightSideBar.pack(side=RIGHT)       #add right side bar to the window
 RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
 SideMenuPanel=tk.Canvas(Window, background="#1f1f1f", height=900, width=50, bd="0", highlightthickness="0")     #Create left side bar
 SideMenuPanel.pack(side=LEFT)   #add left side bar
-SideBarMenuButton = tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc")
+SideBarMenuButton = tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
 SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
 
 #Dev Menu Setup
