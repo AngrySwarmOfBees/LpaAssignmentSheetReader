@@ -161,7 +161,7 @@ def FileDialog():
     FileType = FileInfo[1]  #saving file extension
     print(FileType)
     GetSubject()
-def RightSideMenuExpand():
+def RightSideMenuExpand():  #expands right menu bar
     global Width
     if Width == True:
         SideMenuPanel.config(width=200)
@@ -170,6 +170,8 @@ def RightSideMenuExpand():
         SideBarFileButton.place(x=-50, y=45, relwidth="1", relheight=".1")
         SideBarDarkModeButton.config(text="Dark Mode")
         SideBarDarkModeButton.place(x=-45, y=90, relwidth="1", relheight=".1")
+        SideBarSettingsButton.config(text="Settings")
+        SideBarSettingsButton.place(x=-55, y=480, relwidth="1", relheight=".1")
     else:
         SideMenuPanel.config(width=50)
         SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
@@ -177,10 +179,12 @@ def RightSideMenuExpand():
         SideBarFileButton.place(x=0, y=45, relwidth="1", relheight=".1")
         SideBarDarkModeButton.config(text="DM")
         SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")
+        SideBarSettingsButton.config(text="SM")
+        SideBarSettingsButton.place(x=0, y=480, relwidth="1", relheight=".1")
     Width = not Width
 def PlaceholderFunction():
     print("button")
-def ToggleDarkMode():
+def ToggleDarkMode():   #toggles dark mode
     global IsDarkModeActive
     if IsDarkModeActive == True:
         print(IsDarkModeActive)
@@ -191,6 +195,7 @@ def ToggleDarkMode():
         SideBarMenuButton.config(bg="#6200ee")
         SideBarFileButton.config(bg="#6200ee", fg="white")
         SideBarDarkModeButton.config(bg="#6200ee", fg="white")
+        SideBarSettingsButton.config(bg="#6200ee", fg="white")
     else:
         Window.configure(bg="#121212")
         RightSideBar.configure(bg="#1F1B24")
@@ -199,6 +204,7 @@ def ToggleDarkMode():
         SideBarMenuButton.config(bg="#1f1f1f")
         SideBarFileButton.config(bg="#1f1f1f", fg="#bb86fc")
         SideBarDarkModeButton.config(bg="#1f1f1f", fg="#bb86fc")
+        SideBarSettingsButton.config(bg="#1f1f1f", fg="#bb86fc")
 
     IsDarkModeActive = not IsDarkModeActive
     
@@ -210,6 +216,7 @@ BodyFont = TkFont.Font(family="San Fransisco", size=14, weight="normal")    #ini
 Window.title("Lpa assignment sheet tool")   #set window title
 Window.geometry('960x540+50+50')    #set window default size
 Window.configure(bg="#121212")  #set background color(default dark mode)
+Window.resizable(False, False)
 MenuIcon = Image.open("Assets/Menu.png")
 MenuPic = ImageTk.PhotoImage(MenuIcon, color)
 menubar = Menu(Window)  #setup menu bar
@@ -223,12 +230,14 @@ RightSideBar.pack(side=RIGHT)       #add right side bar to the window
 RightSideBarText=RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
 SideMenuPanel=tk.Canvas(Window, background="#1f1f1f", height=900, width=50, bd="0", highlightthickness="0")     #Create left side bar
 SideMenuPanel.pack(side=LEFT)   #add left side bar
-SideBarMenuButton=tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
-SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
-SideBarFileButton = tk.Button(SideMenuPanel, text="FM", font=BodyFont, command=FileDialog, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
-SideBarFileButton.place(x=0, y=45, relwidth="1", relheight=".1")
-SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, command=ToggleDarkMode, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
-SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")
+SideBarMenuButton=tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
+SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1") #Place Menu button
+SideBarFileButton = tk.Button(SideMenuPanel, text="FM", font=BodyFont, command=FileDialog, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
+SideBarFileButton.place(x=0, y=45, relwidth="1", relheight=".1")    #Add open file button
+SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, command=ToggleDarkMode, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialze button
+SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")    #Add toggle dark mode button
+SideBarSettingsButton = tk.Button(SideMenuPanel, text="SM", font=BodyFont, command=PlaceholderFunction, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
+SideBarSettingsButton.place(x=0, y=480, relwidth="1", relheight=".1")   #Place Settings Button
 
 #Dev Menu Setup
 if IsDevModeActive == True:
