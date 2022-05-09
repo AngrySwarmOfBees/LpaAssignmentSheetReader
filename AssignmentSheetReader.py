@@ -44,6 +44,7 @@ global SideBarTextHeight
 global IsDevModeActive
 global Width
 global IsDarkModeActive
+global RightSideBarBodyText
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -61,6 +62,7 @@ SideBarTextHeight = 40
 IsDevModeActive = False
 Width = True
 IsDarkModeActive = True
+RightSideBarBodyText = []
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -141,8 +143,10 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
 def GetSubject():
     global Subject
     global SideBarTextHeight
+    global RightSideBarBodyText
     Subject = sd.askstring(title="Choose Subject", prompt="Please type the name of the subject this assignment sheet pertains to: ")
-    RightSideBar.create_text(135, SideBarTextHeight, text=Subject, fill="#bb86fc", font=BodyFont)
+    Temp = RightSideBar.create_text(135, SideBarTextHeight, text=Subject, fill="#bb86fc", font=BodyFont)
+    RightSideBarBodyText.append(Temp)
     Subject = " (" + Subject + ") "
     SideBarTextHeight = SideBarTextHeight + 20
 
@@ -196,6 +200,8 @@ def ToggleDarkMode():   #toggles dark mode
         SideBarFileButton.config(bg="#6200ee", fg="white")
         SideBarDarkModeButton.config(bg="#6200ee", fg="white")
         SideBarSettingsButton.config(bg="#6200ee", fg="white")
+        for i in RightSideBarBodyText:
+            RightSideBar.itemconfig(i, fill='White')
     else:
         Window.configure(bg="#121212")
         RightSideBar.configure(bg="#1F1B24")
@@ -205,6 +211,8 @@ def ToggleDarkMode():   #toggles dark mode
         SideBarFileButton.config(bg="#1f1f1f", fg="#bb86fc")
         SideBarDarkModeButton.config(bg="#1f1f1f", fg="#bb86fc")
         SideBarSettingsButton.config(bg="#1f1f1f", fg="#bb86fc")
+        for i in RightSideBarBodyText:
+            RightSideBar.itemconfig(i, fill='#bb86fc')
 
     IsDarkModeActive = not IsDarkModeActive
     
