@@ -2,15 +2,14 @@
 
 
 #setting up packages
-from ast import Assign
-from asyncio.windows_events import NULL
-from fileinput import filename
+
 from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
 from tkinter.messagebox import OKCANCEL, askretrycancel
-from turtle import bgcolor, right
+from turtle import bgcolor, color, right, width
 from types import NoneType
+from webbrowser import get
 import docx
 from docx import Document
 import sys
@@ -23,7 +22,8 @@ from tkinter import filedialog as fd
 from tkinter import simpledialog as sd
 from tkinter import messagebox as mb
 import tkinter.font as TkFont
-
+import glob
+from PIL import Image, ImageTk
 
 
 #setting up vars
@@ -42,6 +42,7 @@ global Subject
 global NoFileErrors
 global SideBarTextHeight
 global IsDevModeActive
+global Width
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -57,6 +58,7 @@ AssignmentsAndDueDates = {      #This will be used to hold each assignment and i
 }
 SideBarTextHeight = 40
 IsDevModeActive = False
+Width = True
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -157,15 +159,25 @@ def FileDialog():
     FileType = FileInfo[1]  #saving file extension
     print(FileType)
     GetSubject()
+def RightSideMenuExpand():
+    global Width
+    if Width == True:
+        SideMenuPanel.config(width=200)
+    else:
+        SideMenuPanel.config(width=50)
+    Width = not Width
 
     
+
 #setting up GUI
 Window = tk.Tk()    #setup window
 HeaderFont = TkFont.Font(family="SF Pro Display", size=16, weight="bold")     #Initialize Font standard for headers
 BodyFont = TkFont.Font(family="San Fransisco", size=14, weight="normal")    #initialize font standard for body text
 Window.title("Lpa assignment sheet tool")   #set window title
 Window.geometry('960x540+50+50')    #set window default size
-Window.configure(bg="#1f1f1f")  #set background color(default dark mode)
+Window.configure(bg="#121212")  #set background color(default dark mode)
+MenuIcon = Image.open("Assets/Menu.png")
+MenuPic = ImageTk.PhotoImage(MenuIcon, color)
 menubar = Menu(Window)  #setup menu bar
 Window.config(menu=menubar)     #Add menu bar to window
 fileMenu = Menu(menubar)       #add "File" menu to menu bar
@@ -175,6 +187,10 @@ menubar.add_cascade(label="File", menu=fileMenu)    #set up file menu
 RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")     #create right side bar
 RightSideBar.pack(side=RIGHT)       #add right side bar to the window
 RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
+SideMenuPanel=tk.Canvas(Window, background="#1f1f1f", height=900, width=50, bd="0", highlightthickness="0")     #Create left side bar
+SideMenuPanel.pack(side=LEFT)   #add left side bar
+SideBarMenuButton = tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc")
+SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
 
 #Dev Menu Setup
 if IsDevModeActive == True:
