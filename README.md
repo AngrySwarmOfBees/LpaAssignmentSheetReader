@@ -33,3 +33,8 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - ParseDocumentData() - Removes unwanted data and combines Assignments and Dates into a dictionary
  - GetSubject() - Pop up dialog to assign a subject to each task
  - FileDialog() - Pop up file selection dialog (also parses file path)
+
+### Pre-Release surveys:
+ - [ ] Take survey on what computers people use
+ - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide)
+ - [ ] Take survey on how much people are willing to pay for the tool
