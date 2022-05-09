@@ -215,7 +215,17 @@ def ToggleDarkMode():   #toggles dark mode
             RightSideBar.itemconfig(i, fill='#bb86fc')
 
     IsDarkModeActive = not IsDarkModeActive
+def OpenSettingsWindow():
+    global IsDarkModeActive
+    SettingsWindow = tk.Tk()
+    SettingsWindow.title("Settings")
+    SettingsWindow.geometry('450x540')
+    if IsDarkModeActive == True:
+        SettingsWindow.configure(bg="#121212")
+    else:
+        SettingsWindow.configure(bg="White")
     
+
 
 #setting up GUI
 Window = tk.Tk()    #setup window
@@ -244,7 +254,7 @@ SideBarFileButton = tk.Button(SideMenuPanel, text="FM", font=BodyFont, command=F
 SideBarFileButton.place(x=0, y=45, relwidth="1", relheight=".1")    #Add open file button
 SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, command=ToggleDarkMode, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialze button
 SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")    #Add toggle dark mode button
-SideBarSettingsButton = tk.Button(SideMenuPanel, text="SM", font=BodyFont, command=PlaceholderFunction, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
+SideBarSettingsButton = tk.Button(SideMenuPanel, text="SM", font=BodyFont, command=OpenSettingsWindow, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
 SideBarSettingsButton.place(x=0, y=480, relwidth="1", relheight=".1")   #Place Settings Button
 
 #Dev Menu Setup
