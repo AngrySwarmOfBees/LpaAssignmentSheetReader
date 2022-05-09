@@ -36,5 +36,5 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
 
 ### Pre-Release surveys:
  - [ ] Take survey on what computers people use
- - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide)
+ - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide) [Data: NULL]
  - [ ] Take survey on how much people are willing to pay for the tool
