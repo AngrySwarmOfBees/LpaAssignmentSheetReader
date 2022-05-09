@@ -1,10 +1,11 @@
-    #this is a system that when supplied with a Logos prep assignment sheet, can read out assignment sheets and do multiple things with that data
+#this is a system that when supplied with a Logos prep assignment sheet, can read out assignment sheets and do multiple things with that data
 
 
 #setting up packages
 from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
+from pydoc import isdata
 from tkinter.messagebox import OKCANCEL, askretrycancel
 from turtle import bgcolor, color, left, right, width
 from types import NoneType
@@ -42,6 +43,7 @@ global NoFileErrors
 global SideBarTextHeight
 global IsDevModeActive
 global Width
+global IsDarkModeActive
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -58,6 +60,7 @@ AssignmentsAndDueDates = {      #This will be used to hold each assignment and i
 SideBarTextHeight = 40
 IsDevModeActive = False
 Width = True
+IsDarkModeActive = True
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -163,11 +166,41 @@ def RightSideMenuExpand():
     if Width == True:
         SideMenuPanel.config(width=200)
         SideBarMenuButton.place(x=-75, y=0, relwidth="1", relheight=".1")
+        SideBarFileButton.config(text="Open File")
+        SideBarFileButton.place(x=-50, y=45, relwidth="1", relheight=".1")
+        SideBarDarkModeButton.config(text="Dark Mode")
+        SideBarDarkModeButton.place(x=-45, y=90, relwidth="1", relheight=".1")
     else:
         SideMenuPanel.config(width=50)
         SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
+        SideBarFileButton.config(text="FM")
+        SideBarFileButton.place(x=0, y=45, relwidth="1", relheight=".1")
+        SideBarDarkModeButton.config(text="DM")
+        SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")
     Width = not Width
+def PlaceholderFunction():
+    print("button")
+def ToggleDarkMode():
+    global IsDarkModeActive
+    if IsDarkModeActive == True:
+        print(IsDarkModeActive)
+        Window.configure(bg="#ffffff")
+        RightSideBar.configure(bg="#6200ee")
+        RightSideBar.itemconfig(RightSideBarText, fill='White')
+        SideMenuPanel.config(bg="#6200ee")
+        SideBarMenuButton.config(bg="#6200ee")
+        SideBarFileButton.config(bg="#6200ee", fg="white")
+        SideBarDarkModeButton.config(bg="#6200ee", fg="white")
+    else:
+        Window.configure(bg="#121212")
+        RightSideBar.configure(bg="#1F1B24")
+        RightSideBar.itemconfig(RightSideBarText, fill='#bb86fc')
+        SideMenuPanel.config(bg="#1f1f1f")
+        SideBarMenuButton.config(bg="#1f1f1f")
+        SideBarFileButton.config(bg="#1f1f1f", fg="#bb86fc")
+        SideBarDarkModeButton.config(bg="#1f1f1f", fg="#bb86fc")
 
+    IsDarkModeActive = not IsDarkModeActive
     
 
 #setting up GUI
@@ -187,11 +220,15 @@ fileMenu.add_command(label="Exit")      #Add "exit" button to file menu
 menubar.add_cascade(label="File", menu=fileMenu)    #set up file menu
 RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")     #create right side bar
 RightSideBar.pack(side=RIGHT)       #add right side bar to the window
-RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
+RightSideBarText=RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
 SideMenuPanel=tk.Canvas(Window, background="#1f1f1f", height=900, width=50, bd="0", highlightthickness="0")     #Create left side bar
 SideMenuPanel.pack(side=LEFT)   #add left side bar
-SideBarMenuButton = tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
+SideBarMenuButton=tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
 SideBarMenuButton.place(x=0, y=0, relwidth="1", relheight=".1")
+SideBarFileButton = tk.Button(SideMenuPanel, text="FM", font=BodyFont, command=FileDialog, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
+SideBarFileButton.place(x=0, y=45, relwidth="1", relheight=".1")
+SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, command=ToggleDarkMode, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")
+SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")
 
 #Dev Menu Setup
 if IsDevModeActive == True:
