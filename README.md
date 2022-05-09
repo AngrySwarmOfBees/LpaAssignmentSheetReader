@@ -1,16 +1,5 @@
 # Lpa Assignment Sheet Reader
 This is a summer hobby project written in python, the purpose of this project is to read out lpa assignment sheets and put that data into a to do list
-## Information
-### Unpackaged:
-To use this program in its non-executable form, the program needs to be launched from a console:
-This command can be used: 
-
-`python3 ./AssignmentSheetReader.py <file location> <subject>`
-
-File location must be supplied with the full file path, including drive name, and file extension  
-Example: `C:\Users\<user>\Doccuments\file.docx`  
-Subject is the class that the assignment sheet is from, to allow for sorting
-Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 
 ## Development Status:
 - 5/3/2022: Program is not opperational yet
@@ -18,6 +7,7 @@ Currently, the program only supports ".docx" or Microsoft Word Doccument files.
 - 5/5/2022: Program now can open the requested file, and read it, then detects when a row contains the string "Assignments/ Instructions", and then prints the entire rows information out to the console, cleaned up previous work (2 hours work)
 - 5/5/2022 (part 2): Now removes empty strings, and combines the list of assignments and list of due dates into a dictionary (1 hours work)
 - 5/8/2022: Now has a GUI, can open file and select Subject, does not add data to a list yet (2 hours work)
+- 5/8/2022 (part 2): Added constant stylizing, side bar is now functional, added dev menu, only accessable by using "Dev-Mode" as a launch argument (3 hours work)
 
 ### Development Roadmap:
 Tasks:  
@@ -26,7 +16,8 @@ Tasks:
 - [x] Create Function to parse file and collect all assignments [**Finished 5/5/2022**]
 - [ ] Create Function to add all assigments to a file of choice (.docx or .csv)
 - [ ] Allow for windows "open with" menu to open a file using this program
-- [ ] Create GUI for program (graphical user interface)
+- [ ] Create GUI for program (graphical user interface) [**Began 5/8/2022**]
+- [ ] Create Icons for GUI (background color: #1F1B24, icon color: #bb86fc)
 - [ ] Remove functions that were neccesary when program was console based (after GUI is finished)
 - [ ] Add support for more file types  
 
@@ -40,4 +31,10 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - OpenFile() - This function only runs if there are no file errors, this prepares the file to be read out
  - GetDocumentData() - Reads out file data and sorts it into the correct arrays
  - ParseDocumentData() - Removes unwanted data and combines Assignments and Dates into a dictionary
- - 
+ - GetSubject() - Pop up dialog to assign a subject to each task
+ - FileDialog() - Pop up file selection dialog (also parses file path)
+
+### Pre-Release surveys:
+ - [ ] Take survey on what computers people use
+ - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide) [Data: NULL]
+ - [ ] Take survey on how much people are willing to pay for the tool
