@@ -35,6 +35,6 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - FileDialog() - Pop up file selection dialog (also parses file path)
 
 ### Pre-Release surveys:
- - [ ] Take survey on what computers people use
- - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide) [Data: NULL]
+ - [x] Take survey on what computers people use [Data: Mac: 50%, Chromebook: 5%, Windows: 45%]
+ - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide) [Data: Dark: 61%, Light:13%, choose: 26%]
  - [ ] Take survey on how much people are willing to pay for the tool
