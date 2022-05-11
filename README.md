@@ -21,7 +21,7 @@ Tasks:
 - [ ] Allow for windows "open with" menu to open a file using this program
 - [ ] Create GUI for program (graphical user interface) [**Began 5/8/2022**]
 - [ ] Create Icons for GUI (background color: #1F1B24, icon color: #bb86fc)
-- [ ] Remove functions that were neccesary when program was console based (after GUI is finished)
+- [x] Remove functions that were neccesary when program was console based (after GUI is finished)
 - [ ] Add support for more file types  
 
 ## Other
