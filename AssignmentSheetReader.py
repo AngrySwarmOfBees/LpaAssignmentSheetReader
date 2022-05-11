@@ -6,6 +6,7 @@ from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
 from pydoc import isdata
+from textwrap import fill
 from tkinter.messagebox import OKCANCEL, askretrycancel
 from turtle import bgcolor, color, left, right, width
 from types import NoneType
@@ -220,10 +221,26 @@ def OpenSettingsWindow():
     SettingsWindow = tk.Tk()
     SettingsWindow.title("Settings")
     SettingsWindow.geometry('450x540')
+    SettingsCanvas=tk.Canvas(SettingsWindow, width=450, height=540)
+    SettingsCanvas.pack(side=TOP)
+    SettingsHeader = SettingsCanvas.create_text(50, 25, text="Settings:", font=HeaderFont)
+    Option1Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
+    Option1Button.place(x=50, y= 50)
+    Option2Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
+    Option2Button.place(x=50, y= 75)
     if IsDarkModeActive == True:
         SettingsWindow.configure(bg="#121212")
+        SettingsCanvas.configure(bg="#121212")
+        SettingsCanvas.itemconfig(SettingsHeader, fill="#bb86fc")
+        Option1Button.configure(fg="#bb86fc", bg="#121212")
+        Option2Button.configure(fg="#bb86fc", bg="#121212")
     else:
         SettingsWindow.configure(bg="White")
+        SettingsCanvas.configure(bg="White")
+        SettingsCanvas.itemconfig(SettingsHeader, fill="#6200ee")
+        Option1Button.configure(fg="#6200ee", bg="White")
+        Option2Button.configure(fg="#6200ee", bg="White")
+    
     
 
 
@@ -231,6 +248,10 @@ def OpenSettingsWindow():
 Window = tk.Tk()    #setup window
 HeaderFont = TkFont.Font(family="SF Pro Display", size=16, weight="bold")     #Initialize Font standard for headers
 BodyFont = TkFont.Font(family="San Fransisco", size=14, weight="normal")    #initialize font standard for body text
+DarkModeStyle = ttk.Style()
+DarkModeStyle.configure("Dark.Mode", foreground='#bb86fc')
+LightModeStyle = ttk.Style()
+LightModeStyle.configure("Light.Mode", foreground='#6200ee')
 Window.title("Lpa assignment sheet tool")   #set window title
 Window.geometry('960x540+50+50')    #set window default size
 Window.configure(bg="#121212")  #set background color(default dark mode)
