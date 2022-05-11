@@ -42,6 +42,7 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - [x] Light Mode/Dark Mode Survey (Results: Dark mode/Allow for user to decide) [Data: Dark: 61%, Light:13%, choose: 26%]
  - [ ] Take survey on how much people are willing to pay for the tool
  - [ ] How people want the to-do list exported (options: Spreadsheet, Document)
+ - [ ] Do people use their school laptops for homework
 ### Survey desicions 
  - Package software for: Mac, windows
  - Apperance mode: both, let user decide
