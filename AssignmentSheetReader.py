@@ -46,6 +46,7 @@ global IsDevModeActive
 global Width
 global IsDarkModeActive
 global RightSideBarBodyText
+global ExportFileType
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -64,6 +65,7 @@ IsDevModeActive = False
 Width = True
 IsDarkModeActive = True
 RightSideBarBodyText = []
+ExportFileType = "csv"
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -216,29 +218,41 @@ def ToggleDarkMode():   #toggles dark mode
             RightSideBar.itemconfig(i, fill='#bb86fc')
 
     IsDarkModeActive = not IsDarkModeActive
+def UpdatedButtonVar(str):
+    print(str)
 def OpenSettingsWindow():
     global IsDarkModeActive
+    global ExportFileType
     SettingsWindow = tk.Tk()
     SettingsWindow.title("Settings")
     SettingsWindow.geometry('450x540')
     SettingsCanvas=tk.Canvas(SettingsWindow, width=450, height=540)
     SettingsCanvas.pack(side=TOP)
+    ExportFileType = tk.StringVar(SettingsCanvas)
     SettingsHeader = SettingsCanvas.create_text(50, 25, text="Settings:", font=HeaderFont)
-    Option1Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
-    Option1Button.place(x=50, y= 50)
+    FileSaveTypeText = SettingsCanvas.create_text(75, 65, text="Export as:", font=BodyFont)
+    FileSaveTypeButtonDoc = tk.Radiobutton(SettingsCanvas, text="docx", font=BodyFont, value="docx", variable=ExportFileType)
+    FileSaveTypeButtonDoc.place(x=150, y= 50)
+    FileSaveTypeButtonCsv = tk.Radiobutton(SettingsCanvas, text="csv", font=BodyFont, value="csv", variable=ExportFileType)
+    FileSaveTypeButtonCsv.place(x=300, y= 50)
+    FileSaveTypeButtonCsv.select()
     Option2Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
     Option2Button.place(x=50, y= 75)
     if IsDarkModeActive == True:
         SettingsWindow.configure(bg="#121212")
         SettingsCanvas.configure(bg="#121212")
         SettingsCanvas.itemconfig(SettingsHeader, fill="#bb86fc")
-        Option1Button.configure(fg="#bb86fc", bg="#121212")
+        SettingsCanvas.itemconfig(FileSaveTypeText, fill="#bb86fc")
+        FileSaveTypeButtonDoc.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
+        FileSaveTypeButtonCsv.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
         Option2Button.configure(fg="#bb86fc", bg="#121212")
     else:
         SettingsWindow.configure(bg="White")
         SettingsCanvas.configure(bg="White")
         SettingsCanvas.itemconfig(SettingsHeader, fill="#6200ee")
-        Option1Button.configure(fg="#6200ee", bg="White")
+        SettingsCanvas.itemconfig(FileSaveTypeText, fill="#6200ee")
+        FileSaveTypeButtonDoc.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
+        FileSaveTypeButtonCsv.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
         Option2Button.configure(fg="#6200ee", bg="White")
     
     
