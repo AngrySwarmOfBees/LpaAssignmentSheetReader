@@ -190,7 +190,7 @@ def UpdateSavedSettings():  #This saves new settings to a json file
     global SettingsDict
     global ExportFileType
     global IsDarkModeActive
-    print("e")
+    print("Updated Settings File")
     SettingsDict["List File Type"] = ExportFileType.get()
     SettingsDict["Dark Mode"] = IsDarkModeActive
     with open('Settings.json', 'w') as S:
@@ -246,8 +246,6 @@ def ToggleDarkMode():   #toggles dark mode
 
     IsDarkModeActive = not IsDarkModeActive
     UpdateSavedSettings()
-
-    
 
 def OpenSettingsWindow():
     global IsDarkModeActive
