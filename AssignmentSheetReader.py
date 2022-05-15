@@ -11,6 +11,7 @@ from tkinter.messagebox import OKCANCEL, askretrycancel
 from turtle import bgcolor, color, left, right, width
 from types import NoneType
 from webbrowser import get
+from xml.etree.ElementTree import tostring
 import docx
 from docx import Document
 import sys
@@ -25,6 +26,7 @@ from tkinter import messagebox as mb
 import tkinter.font as TkFont
 import glob
 from PIL import Image, ImageTk
+import json
 
 
 #setting up vars
@@ -47,6 +49,7 @@ global Width
 global IsDarkModeActive
 global RightSideBarBodyText
 global ExportFileType
+global SettingsDict
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -66,6 +69,9 @@ Width = True
 IsDarkModeActive = True
 RightSideBarBodyText = []
 ExportFileType = "csv"
+SettingsDict = {
+    
+}
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -168,6 +174,27 @@ def FileDialog():
     FileType = FileInfo[1]  #saving file extension
     print(FileType)
     GetSubject()
+
+def LoadSavedSettings():
+    global SettingsDict
+    global ExportFileType
+    global IsDarkModeActive
+    with open('Settings.json', 'r') as S:
+        SettingsDict = json.load(S)
+    ExportFileType.set(value=SettingsDict["List File Type"])
+    IsDarkModeActive = value=SettingsDict["Dark Mode"]
+    IsDarkModeActive = not IsDarkModeActive
+    ToggleDarkMode()
+
+def UpdateSavedSettings():  #This saves new settings to a json file
+    global SettingsDict
+    global ExportFileType
+    global IsDarkModeActive
+    print("e")
+    SettingsDict["List File Type"] = ExportFileType.get()
+    SettingsDict["Dark Mode"] = IsDarkModeActive
+    with open('Settings.json', 'w') as S:
+        json.dump(SettingsDict, S)
 def RightSideMenuExpand():  #expands right menu bar
     global Width
     if Width == True:
@@ -218,8 +245,10 @@ def ToggleDarkMode():   #toggles dark mode
             RightSideBar.itemconfig(i, fill='#bb86fc')
 
     IsDarkModeActive = not IsDarkModeActive
-def UpdatedButtonVar(str):
-    print(str)
+    UpdateSavedSettings()
+
+    
+
 def OpenSettingsWindow():
     global IsDarkModeActive
     global ExportFileType
@@ -231,13 +260,13 @@ def OpenSettingsWindow():
     ExportFileType = tk.StringVar(SettingsCanvas)
     SettingsHeader = SettingsCanvas.create_text(50, 25, text="Settings:", font=HeaderFont)
     FileSaveTypeText = SettingsCanvas.create_text(75, 65, text="Export as:", font=BodyFont)
-    FileSaveTypeButtonDoc = tk.Radiobutton(SettingsCanvas, text="docx", font=BodyFont, value="docx", variable=ExportFileType)
+    FileSaveTypeButtonDoc = tk.Radiobutton(SettingsCanvas, text="docx", font=BodyFont, value="docx", variable=ExportFileType, command=UpdateSavedSettings)
     FileSaveTypeButtonDoc.place(x=150, y= 50)
-    FileSaveTypeButtonCsv = tk.Radiobutton(SettingsCanvas, text="csv", font=BodyFont, value="csv", variable=ExportFileType)
+    FileSaveTypeButtonCsv = tk.Radiobutton(SettingsCanvas, text="csv", font=BodyFont, value="csv", variable=ExportFileType, command=UpdateSavedSettings)
     FileSaveTypeButtonCsv.place(x=300, y= 50)
     FileSaveTypeButtonCsv.select()
     Option2Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
-    Option2Button.place(x=50, y= 75)
+    Option2Button.place(x=50, y= 100)
     if IsDarkModeActive == True:
         SettingsWindow.configure(bg="#121212")
         SettingsCanvas.configure(bg="#121212")
@@ -260,13 +289,14 @@ def OpenSettingsWindow():
 
 #setting up GUI
 Window = tk.Tk()    #setup window
+ExportFileType = StringVar()
 HeaderFont = TkFont.Font(family="SF Pro Display", size=16, weight="bold")     #Initialize Font standard for headers
 BodyFont = TkFont.Font(family="San Fransisco", size=14, weight="normal")    #initialize font standard for body text
 DarkModeStyle = ttk.Style()
 DarkModeStyle.configure("Dark.Mode", foreground='#bb86fc')
 LightModeStyle = ttk.Style()
 LightModeStyle.configure("Light.Mode", foreground='#6200ee')
-Window.title("Lpa assignment sheet tool")   #set window title
+Window.title("Lpa assignment sheet tool")   #set window title   
 Window.geometry('960x540+50+50')    #set window default size
 Window.configure(bg="#121212")  #set background color(default dark mode)
 Window.resizable(False, False)
@@ -291,6 +321,7 @@ SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, comma
 SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")    #Add toggle dark mode button
 SideBarSettingsButton = tk.Button(SideMenuPanel, text="SM", font=BodyFont, command=OpenSettingsWindow, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
 SideBarSettingsButton.place(x=0, y=480, relwidth="1", relheight=".1")   #Place Settings Button
+LoadSavedSettings()
 
 #Dev Menu Setup
 if IsDevModeActive == True:
