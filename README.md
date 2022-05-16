@@ -9,6 +9,7 @@ This is a summer hobby project written in python, the purpose of this project is
 - 5/8/2022: Now has a GUI, can open file and select Subject, does not add data to a list yet (2 hours work)
 - 5/8/2022 (part 2): Added constant stylizing, side bar is now functional, added dev menu, only accessable by using "Dev-Mode" as a launch argument (3 hours work)
 - 5/9/2022: Improved UI, added settings window (empty) (1.2 hours work)
+- 5/15/2022: Added settings save file, file preview panel (2 hours work)
 
 ### Development Roadmap:
 Tasks:  
