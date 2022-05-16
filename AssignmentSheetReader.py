@@ -81,8 +81,8 @@ print(LaunchArgumentSubject) #output (remove in release)
 '''
 
 #Parsing The provided File name and subject
-LaunchArgument = str(sys.argv[1])
-if LaunchArgument == "Dev-Mode":
+
+if sys.argv.__contains__('Dev-Mode') == True:
     IsDevModeActive = True
 
 #Checking that file type is supported, and that file exists
@@ -100,13 +100,28 @@ def CheckIfIsSupported():
         #exit()      #will not exit when program has GUI, will only allow to chose another path
         return NoFileErrors
 #Accessing file
-def OpenFile():
-    if NoFileErrors == True:        #will only run if there are no file errors
-        global DocumentRef      #allows for the function to access the var
-        DocumentRef = docx.Document(DocPath)      #opens the doccument and creates a variable that refrences it
-    else:
-        print("Error: file error")      #seccond warning, though this function should not even be able to be run in the first place if there is a file error
-        #exit()      #will not exit when program has GUI, will throw pop up
+            
+#Handles assignment and due date data 
+def ParseDocumentData():        #Combines assignments list and due dates list into a dictionary
+    global Assignments    #Allows for function to access var
+    global Dates        #Allows for function to access var
+    global AssignmentsAndDueDates       #Allows for function to access var
+    for a in Dates:     #clears empty strings
+        if a == '':     #This removes empty string
+            Dates.remove(a)
+        if a == "":     #this also removes empty Strings, not all get removed for some reason idk
+            Dates.remove(a)
+    for b in Assignments:       #clears empty strings, and ¨Assignments/ Instructions" 
+        if b == "Assignments/ Instructions":
+            Assignments.remove(b)
+        if b == '':
+            Assignments.remove(b)
+    for i in Assignments:
+        AssignmentsAndDueDates[i] = Dates[Assignments.index(i)]
+        tempstr = str(i + "   " + Dates[Assignments.index(i)] + "\n" + "\n")
+        DocumentCanvas.insert(DocumentText, tk.END, tempstr)
+        DocumentCanvas.config(scrollregion=DocumentCanvas.bbox('all'))
+
 #Reading out file info and saving assignments and dates
 def GetDocumentData():
     global DocumentRef      #Allows for function to access var
@@ -131,25 +146,8 @@ def GetDocumentData():
                         SplitAssignments = r.text.split("\n")
                         for t in SplitAssignments:
                             Assignments.append(t)
-
-            
-#Handles assignment and due date data 
-def ParseDocumentData():        #Combines assignments list and due dates list into a dictionary
-    global Assignments    #Allows for function to access var
-    global Dates        #Allows for function to access var
-    global AssignmentsAndDueDates       #Allows for function to access var
-    for a in Dates:     #clears empty strings
-        if a == '':     #This removes empty string
-            Dates.remove(a)
-        if a == "":     #this also removes empty Strings, not all get removed for some reason idk
-            Dates.remove(a)
-    for b in Assignments:       #clears empty strings, and ¨Assignments/ Instructions" 
-        if b == "Assignments/ Instructions":
-            Assignments.remove(b)
-        if b == '':
-            Assignments.remove(b)
-    for i in Assignments:
-        AssignmentsAndDueDates[i] = Dates[Assignments.index(i)]
+    ParseDocumentData()
+    
 def GetSubject():
     global Subject
     global SideBarTextHeight
@@ -157,8 +155,22 @@ def GetSubject():
     Subject = sd.askstring(title="Choose Subject", prompt="Please type the name of the subject this assignment sheet pertains to: ")
     Temp = RightSideBar.create_text(135, SideBarTextHeight, text=Subject, fill="#bb86fc", font=BodyFont)
     RightSideBarBodyText.append(Temp)
+    tempstr = "\n" + Subject + ": \n" + "\n"
+    DocumentCanvas.insert(DocumentText, tk.END, tempstr)
     Subject = " (" + Subject + ") "
     SideBarTextHeight = SideBarTextHeight + 20
+    GetDocumentData()
+
+def OpenFile():
+    CheckForFile()
+    CheckIfIsSupported()
+    if NoFileErrors == True:        #will only run if there are no file errors
+        global DocumentRef      #allows for the function to access the var
+        DocumentRef = docx.Document(DocPath)      #opens the doccument and creates a variable that refrences it
+    else:
+        print("Error: file error")      #seccond warning, though this function should not even be able to be run in the first place if there is a file error
+        #exit()      #will not exit when program has GUI, will throw pop up
+    GetSubject()
 
 def FileDialog():
     global LaunchArgument
@@ -174,7 +186,7 @@ def FileDialog():
     FileInfo = FileName.split(".")   #creates an array containing the split string, the latter half of the split string is the file extension
     FileType = FileInfo[1]  #saving file extension
     print(FileType)
-    GetSubject()
+    OpenFile()
 
 def LoadSavedSettings():
     global SettingsDict
@@ -231,6 +243,8 @@ def ToggleDarkMode():   #toggles dark mode
         SideBarFileButton.config(bg="#6200ee", fg="white")
         SideBarDarkModeButton.config(bg="#6200ee", fg="white")
         SideBarSettingsButton.config(bg="#6200ee", fg="white")
+        DocumentCanvas.itemconfig(DocumentText, fill="#6200ee")
+        DocumentScrollBar.config(bg="white")
         for i in RightSideBarBodyText:
             RightSideBar.itemconfig(i, fill='White')
     else:
@@ -242,6 +256,8 @@ def ToggleDarkMode():   #toggles dark mode
         SideBarFileButton.config(bg="#1f1f1f", fg="#bb86fc")
         SideBarDarkModeButton.config(bg="#1f1f1f", fg="#bb86fc")
         SideBarSettingsButton.config(bg="#1f1f1f", fg="#bb86fc")
+        DocumentCanvas.itemconfig(DocumentText, fill="#bb86fc")
+        DocumentScrollBar.config(bg="#bb86fc")
         for i in RightSideBarBodyText:
             RightSideBar.itemconfig(i, fill='#bb86fc')
 
@@ -323,12 +339,12 @@ SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, comma
 SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")    #Add toggle dark mode button
 SideBarSettingsButton = tk.Button(SideMenuPanel, text="SM", font=BodyFont, command=OpenSettingsWindow, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
 SideBarSettingsButton.place(x=0, y=480, relwidth="1", relheight=".1")   #Place Settings Button
-DocumentCanvas=tk.Canvas(Window, background="#1F1B24", width=612, height=791, bd=0, highlightthickness="0")
+DocumentCanvas=tk.Canvas(Window, background="#1F1B24", width=612, height=9999, bd=0, highlightthickness="0")
 DocumentCanvas.place(x=125, y=0, relwidth=".5", relheight="1")
-DocumentText = DocumentCanvas.create_text(0, 0, text="", font=BodyFont)
-
-
-
+DocumentText = DocumentCanvas.create_text(235, 25, font=BodyFont, text="Detected Tasks: \n", justify=tk.CENTER, width=450, anchor=tk.N, fill="#bb86fc")
+DocumentScrollBar = tk.Scrollbar(DocumentCanvas, bg="#bb86fc", troughcolor="#bb86fc", activebackground="#1f1f1f", command=DocumentCanvas.yview)
+DocumentScrollBar.pack(side=RIGHT, fill=Y)
+DocumentCanvas.config(yscrollcommand=DocumentScrollBar.set)
 LoadSavedSettings()
 
 #Dev Menu Setup
