@@ -270,7 +270,7 @@ def OpenSettingsWindow():       #Settings window setup
     SettingsWindow = tk.Tk()
     SettingsWindow.title("Settings")
     SettingsWindow.geometry('450x540')
-    SettingsCanvas=tk.Canvas(SettingsWindow, width=450, height=540)
+    SettingsCanvas=tk.Canvas(SettingsWindow, width=450, height=540, borderwidth=0, highlightthickness=0)
     SettingsCanvas.pack(side=TOP)
     ExportFileType = tk.StringVar(SettingsCanvas)
     SettingsHeader = SettingsCanvas.create_text(50, 25, text="Settings:", font=HeaderFont)
@@ -283,6 +283,10 @@ def OpenSettingsWindow():       #Settings window setup
     Option2Text = SettingsCanvas.create_text(65, 105, text="Option2", font=BodyFont)
     Option2Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
     Option2Button.place(x=150, y= 90)
+    DonateText = tk.Label(SettingsCanvas, text="Support this project and get early access to features", font=("San Fransisco", 12))
+    DonateText.place(x=10, y=475)
+    DonateButton = tk.Button(SettingsCanvas, command=PlaceholderFunction, width=7, anchor=tk.CENTER, text="Donate")
+    DonateButton.place(x=375, y=475)
     if IsDarkModeActive == True:
         SettingsWindow.configure(bg="#121212")
         SettingsCanvas.configure(bg="#121212")
@@ -291,6 +295,8 @@ def OpenSettingsWindow():       #Settings window setup
         SettingsCanvas.itemconfig(Option2Text, fill="#bb86fc")
         FileSaveTypeButtonDoc.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
         FileSaveTypeButtonCsv.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
+        DonateText.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
+        DonateButton.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
         Option2Button.configure(fg="#bb86fc", bg="#121212")
     else:
         SettingsWindow.configure(bg="White")
@@ -300,6 +306,8 @@ def OpenSettingsWindow():       #Settings window setup
         SettingsCanvas.itemconfig(Option2Text, fill="#6200ee")
         FileSaveTypeButtonDoc.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
         FileSaveTypeButtonCsv.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
+        DonateText.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
+        DonateButton.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
         Option2Button.configure(fg="#6200ee", bg="White")
     
     
@@ -310,6 +318,7 @@ Window = tk.Tk()    #setup window
 ExportFileType = StringVar()
 HeaderFont = TkFont.Font(family="SF Pro Display", size=16, weight="bold")     #Initialize Font standard for headers
 BodyFont = TkFont.Font(family="San Fransisco", size=14, weight="normal")    #initialize font standard for body text
+SubBodyFont = TkFont.Font(family="San Fransisco", size=5, weight="normal")
 DarkModeStyle = ttk.Style()
 DarkModeStyle.configure("Dark.Mode", foreground='#bb86fc')
 LightModeStyle = ttk.Style()
