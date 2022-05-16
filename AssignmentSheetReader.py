@@ -2,6 +2,7 @@
 
 
 #setting up packages
+from ast import Assign
 from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
@@ -27,6 +28,8 @@ import tkinter.font as TkFont
 import glob
 from PIL import Image, ImageTk
 import json
+import csv
+from datetime import date
 
 
 #setting up vars
@@ -60,9 +63,7 @@ IsAssignmentRow = True      #This var is used to allow for removing everything t
 Assignments = []        #This list will contain all assignment tasks
 Dates = []      #This list will contain all due dates
 TempAssignmentStr = ""      #This string is used to hold information from each cell untill it can be added into the list
-AssignmentsAndDueDates = {      #This will be used to hold each assignment and its cooresponding due date
-    "" : ""
-}
+AssignmentsAndDueDates = {}  #This will be used to hold each assignment and its cooresponding due date
 SideBarTextHeight = 40
 IsDevModeActive = False
 Width = True
@@ -310,6 +311,27 @@ def OpenSettingsWindow():       #Settings window setup
         DonateButton.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
         Option2Button.configure(fg="#6200ee", bg="White")
     
+#TO-Do list export function
+def ExportToDoList():
+    global AssignmentsAndDueDates
+    global ExportFileType
+    print(AssignmentsAndDueDates)
+    print("Exporting")
+    tempfieldnames = ['Task', 'Due Date', 'Completed']
+    if ExportFileType.get() == "csv":   #csv file exporting
+        today = date.today()
+        exportfilenametemp = str(today) + ".csv"
+        with open(exportfilenametemp, 'a') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=tempfieldnames)
+            writer.writeheader()
+            for key in AssignmentsAndDueDates.keys():
+                csvfile.write("%s, %s\n" % (key, AssignmentsAndDueDates[key]))
+    else:
+        today = date.today()
+        exportfilenametemp = str(today) + ".docx"
+    
+
+    
     
 
 
@@ -338,6 +360,8 @@ menubar.add_cascade(label="File", menu=fileMenu)    #set up file menu
 RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")     #create right side bar
 RightSideBar.pack(side=RIGHT)       #add right side bar to the window
 RightSideBarText=RightSideBar.create_text(135, 20, text="Added Subjects:", fill="#bb86fc", font=HeaderFont)     #add right side bar header
+ExportFileButton=tk.Button(RightSideBar, fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212", command=ExportToDoList, text="Export List")
+ExportFileButton.place(x=40, y=450, relheight=".1", relwidth=".7")
 SideMenuPanel=tk.Canvas(Window, background="#1f1f1f", height=900, width=50, bd="0", highlightthickness="0")     #Create left side bar
 SideMenuPanel.pack(side=LEFT)   #add left side bar
 SideBarMenuButton=tk.Button(SideMenuPanel, image=MenuPic, command=RightSideMenuExpand, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
@@ -368,7 +392,8 @@ if IsDevModeActive == True:
 
 Window.mainloop()
 
-
+'''
 for c in AssignmentsAndDueDates:        #Remove in release, this prints out data from the dictionary 
     print(c + Subject + "     " + AssignmentsAndDueDates[c])
     print("\n")
+'''
