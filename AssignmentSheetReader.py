@@ -131,6 +131,7 @@ def GetDocumentData():
                         SplitAssignments = r.text.split("\n")
                         for t in SplitAssignments:
                             Assignments.append(t)
+
             
 #Handles assignment and due date data 
 def ParseDocumentData():        #Combines assignments list and due dates list into a dictionary
@@ -191,10 +192,10 @@ def UpdateSavedSettings():  #This saves new settings to a json file
     global ExportFileType
     global IsDarkModeActive
     print("Updated Settings File")
-    SettingsDict["List File Type"] = ExportFileType.get()
-    SettingsDict["Dark Mode"] = IsDarkModeActive
-    with open('Settings.json', 'w') as S:
-        json.dump(SettingsDict, S)
+    SettingsDict["List File Type"] = ExportFileType.get()   #Adding setting to dictionary
+    SettingsDict["Dark Mode"] = IsDarkModeActive    #Adding setting to dictionary
+    with open('Settings.json', 'w') as S:   #opens Settings.json
+        json.dump(SettingsDict, S)  #saves dictionary to json file
 def RightSideMenuExpand():  #expands right menu bar
     global Width
     if Width == True:
@@ -247,7 +248,7 @@ def ToggleDarkMode():   #toggles dark mode
     IsDarkModeActive = not IsDarkModeActive
     UpdateSavedSettings()
 
-def OpenSettingsWindow():
+def OpenSettingsWindow():       #Settings window setup
     global IsDarkModeActive
     global ExportFileType
     SettingsWindow = tk.Tk()
@@ -263,13 +264,15 @@ def OpenSettingsWindow():
     FileSaveTypeButtonCsv = tk.Radiobutton(SettingsCanvas, text="csv", font=BodyFont, value="csv", variable=ExportFileType, command=UpdateSavedSettings)
     FileSaveTypeButtonCsv.place(x=300, y= 50)
     FileSaveTypeButtonCsv.select()
+    Option2Text = SettingsCanvas.create_text(65, 105, text="Option2", font=BodyFont)
     Option2Button = tk.Checkbutton(SettingsCanvas, text="Test", font=BodyFont)
-    Option2Button.place(x=50, y= 100)
+    Option2Button.place(x=150, y= 90)
     if IsDarkModeActive == True:
         SettingsWindow.configure(bg="#121212")
         SettingsCanvas.configure(bg="#121212")
         SettingsCanvas.itemconfig(SettingsHeader, fill="#bb86fc")
         SettingsCanvas.itemconfig(FileSaveTypeText, fill="#bb86fc")
+        SettingsCanvas.itemconfig(Option2Text, fill="#bb86fc")
         FileSaveTypeButtonDoc.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
         FileSaveTypeButtonCsv.configure(fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212")
         Option2Button.configure(fg="#bb86fc", bg="#121212")
@@ -278,6 +281,7 @@ def OpenSettingsWindow():
         SettingsCanvas.configure(bg="White")
         SettingsCanvas.itemconfig(SettingsHeader, fill="#6200ee")
         SettingsCanvas.itemconfig(FileSaveTypeText, fill="#6200ee")
+        SettingsCanvas.itemconfig(Option2Text, fill="#6200ee")
         FileSaveTypeButtonDoc.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
         FileSaveTypeButtonCsv.configure(fg="#6200ee", bg="White", activeforeground="#6200ee", activebackground="White")
         Option2Button.configure(fg="#6200ee", bg="White")
@@ -319,6 +323,12 @@ SideBarDarkModeButton = tk.Button(SideMenuPanel, text="DM", font=BodyFont, comma
 SideBarDarkModeButton.place(x=0, y=90, relwidth="1", relheight=".1")    #Add toggle dark mode button
 SideBarSettingsButton = tk.Button(SideMenuPanel, text="SM", font=BodyFont, command=OpenSettingsWindow, bg="#1f1f1f", fg="#bb86fc", activebackground="#363636", activeforeground="#bb86fc", bd="0")  #Initialize Button
 SideBarSettingsButton.place(x=0, y=480, relwidth="1", relheight=".1")   #Place Settings Button
+DocumentCanvas=tk.Canvas(Window, background="#1F1B24", width=612, height=791, bd=0, highlightthickness="0")
+DocumentCanvas.place(x=125, y=0, relwidth=".5", relheight="1")
+DocumentText = DocumentCanvas.create_text(0, 0, text="", font=BodyFont)
+
+
+
 LoadSavedSettings()
 
 #Dev Menu Setup
@@ -329,8 +339,7 @@ if IsDevModeActive == True:
     DevMenu.add_command(label="Unused")
     DevMenu.add_command(label="Unused")
     menubar.add_cascade(label="Dev Tools", menu=DevMenu)
-
-
+    
 
 Window.mainloop()
 
