@@ -17,11 +17,11 @@ Tasks:
 - [x] Create function to verify that desired file exists, and is supported [**Finished 5/3/2022**]
 - [x] Create function to access and open requested file [**Finished 5/5/2022**]
 - [x] Create Function to parse file and collect all assignments [**Finished 5/5/2022**]
-- [ ] Add Settings Menu [**Began 5/9/2022**]
+- [x] Add Settings Menu [**Finished 5/12/2022**]
 - [ ] Create Error Handing, when there are not enough due dates, allow for the assignments to share due dates
-- [ ] Create Function to add all assigments to a file of choice (.docx or .csv)
+- [ ] Create Function to add all assigments to a file of choice (.docx or .csv) [**Began 5/16/2022**]
 - [ ] Allow for windows "open with" menu to open a file using this program
-- [ ] Create GUI for program (graphical user interface) [**Began 5/8/2022**]
+- [x] Create GUI for program (graphical user interface) [**Finished 5/12/2022**]
 - [ ] Create Icons for GUI (background color: #1F1B24, icon color: #bb86fc)
 - [x] Remove functions that were neccesary when program was console based (after GUI is finished)
 - [ ] Add support for more file types  
@@ -45,6 +45,7 @@ Have an idea for a feature? Create an issue with your suggestion, and it might g
  - [ ] Take survey on how much people are willing to pay for the tool
  - [ ] How people want the to-do list exported (options: Spreadsheet, Document)
  - [ ] Do people use their school laptops for homework
+ - [ ] How do people do to-do lists right now
 ### Survey desicions 
  - Package software for: Mac, windows
  - Apperance mode: both, let user decide
