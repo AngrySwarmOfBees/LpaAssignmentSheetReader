@@ -53,6 +53,7 @@ global IsDarkModeActive
 global RightSideBarBodyText
 global ExportFileType
 global SettingsDict
+global SubjectList
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -73,6 +74,7 @@ ExportFileType = "csv"
 SettingsDict = {
     
 }
+SubjectList = []
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -113,7 +115,9 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
         if a == "":     #this also removes empty Strings, not all get removed for some reason idk
             Dates.remove(a)
     for b in Assignments:       #clears empty strings, and ¨Assignments/ Instructions" 
-        if b == "Assignments/ Instructions":
+        if b.__contains__("Assignmnets/ Instructions") == True:
+            Assignments.remove(b)
+        if b.__contains__('Assignmnets/ Instructions') == True:
             Assignments.remove(b)
         if b == '':
             Assignments.remove(b)
@@ -123,13 +127,17 @@ def ParseDocumentData():        #Combines assignments list and due dates list in
         DocumentCanvas.insert(DocumentText, tk.END, tempstr)
         DocumentCanvas.config(scrollregion=DocumentCanvas.bbox('all'))
 
-#Reading out file info and saving assignments and dates
+#Reading out file info and saving assignments and dates 
 def GetDocumentData():
     global DocumentRef      #Allows for function to access var
     global Assignments      #Allows for function to access var
     global AssignmentsAndDueDates       #Allows for function to access var
     global TempAssignmentStr        #Allows for function to access var
     global Dates        #Allows for function to access var
+    global Subject
+    global SubjectList
+    Assignments.clear()
+    Dates.clear()
     for p in DocumentRef.tables:    #Runs through all tables in doccument
         for q in p.rows:        #runs through all rows in each table
             TempAssignmentStr = ""      #clears temp var
@@ -146,7 +154,9 @@ def GetDocumentData():
                     else:       #Adds Tasks to assignment array
                         SplitAssignments = r.text.split("\n")
                         for t in SplitAssignments:
-                            Assignments.append(t)
+                            if t.__contains__("Assignments/ Instructions") == False:
+                                Assignments.append(t)
+                                SubjectList.append(Subject)
     ParseDocumentData()
     
 def GetSubject():
@@ -158,7 +168,6 @@ def GetSubject():
     RightSideBarBodyText.append(Temp)
     tempstr = "\n" + Subject + ": \n" + "\n"
     DocumentCanvas.insert(DocumentText, tk.END, tempstr)
-    Subject = " (" + Subject + ") "
     SideBarTextHeight = SideBarTextHeight + 20
     GetDocumentData()
 
@@ -315,9 +324,11 @@ def OpenSettingsWindow():       #Settings window setup
 def ExportToDoList():
     global AssignmentsAndDueDates
     global ExportFileType
+    global SubjectList
+    index = 0
     print(AssignmentsAndDueDates)
     print("Exporting")
-    tempfieldnames = ['Task', 'Due Date', 'Completed']
+    tempfieldnames = ['Task', 'Due Date', 'Subject', 'Completed']
     if ExportFileType.get() == "csv":   #csv file exporting
         today = date.today()
         exportfilenametemp = str(today) + ".csv"
@@ -325,7 +336,8 @@ def ExportToDoList():
             writer = csv.DictWriter(csvfile, fieldnames=tempfieldnames)
             writer.writeheader()
             for key in AssignmentsAndDueDates.keys():
-                csvfile.write("%s, %s\n" % (key, AssignmentsAndDueDates[key]))
+                csvfile.write("%s, %s, %s, %s\n" % (key, AssignmentsAndDueDates[key], SubjectList[index], "no"))
+                index = index + 1
     else:
         today = date.today()
         exportfilenametemp = str(today) + ".docx"
