@@ -19,8 +19,8 @@ Tasks:
 - [x] Create Function to parse file and collect all assignments [**Finished 5/5/2022**]
 - [x] Add Settings Menu [**Finished 5/12/2022**]
 - [ ] Create Error Handing, when there are not enough due dates, allow for the assignments to share due dates
-- [ ] Create Function to add all assigments to a file of choice (.docx or .csv) [**Began 5/16/2022**]
-- [ ] Allow for windows "open with" menu to open a file using this program
+- [x] Create Function to add all assigments to a file of choice (.docx or .csv) [**Finished 7/8/2022**]
+- [x] Allow for windows "open with" menu to open a file using this program
 - [x] Create GUI for program (graphical user interface) [**Finished 5/12/2022**]
 - [ ] Create Icons for GUI (background color: #1F1B24, icon color: #bb86fc)
 - [x] Remove functions that were neccesary when program was console based (after GUI is finished)
