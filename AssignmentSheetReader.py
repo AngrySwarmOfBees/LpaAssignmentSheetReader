@@ -362,6 +362,7 @@ Window.geometry('960x540+50+50')    #set window default size
 Window.configure(bg="#121212")  #set background color(default dark mode)
 Window.resizable(False, False)
 MenuIcon = Image.open("Assets/Menu.png")
+MenuIcon = MenuIcon.resize((48, 48))
 MenuPic = ImageTk.PhotoImage(MenuIcon, color)
 menubar = Menu(Window)  #setup menu bar
 Window.config(menu=menubar)     #Add menu bar to window
