@@ -352,11 +352,8 @@ def DisplayToDoList():
     ToDoWindow.resizable(False, True)
     ToDOCanvas=tk.Canvas(ToDoWindow, background="#1F1B24", width=612, height=9999, bd=0, highlightthickness="0")
     ToDOCanvas.place(x=65, y=0, relwidth=".75", relheight="1")
+    PlaceHolderText = ToDOCanvas.create_text(195, 25, font=BodyFont, text="This does not fully work yet", justify=CENTER, fill="#bb86fc")
 
-    
-    
-
-    
     
 
 
