@@ -7,6 +7,7 @@ from importlib.util import LazyLoader
 from msilib.schema import File
 from operator import truediv
 from pydoc import isdata
+from re import I
 from textwrap import fill
 from tkinter.messagebox import OKCANCEL, askretrycancel
 from turtle import bgcolor, color, left, right, width
@@ -54,6 +55,7 @@ global RightSideBarBodyText
 global ExportFileType
 global SettingsDict
 global SubjectList
+
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
 SupportedFileTypes = ["docx", "doc"] #These are the only two types of files that assignment sheets will be made as
@@ -341,6 +343,17 @@ def ExportToDoList():
     else:
         today = date.today()
         exportfilenametemp = str(today) + ".docx"
+def DisplayToDoList():
+    print("Opening ToDo List window")
+    ToDoWindow = tk.Tk()
+    ToDoWindow.title("LPA Assignment sheet to do list")
+    ToDoWindow.geometry('540x540+50+50')
+    ToDoWindow.configure(bg="#121212")
+    ToDoWindow.resizable(False, True)
+    ToDOCanvas=tk.Canvas(ToDoWindow, background="#1F1B24", width=612, height=9999, bd=0, highlightthickness="0")
+    ToDOCanvas.place(x=65, y=0, relwidth=".75", relheight="1")
+
+    
     
 
     
@@ -369,6 +382,7 @@ Window.config(menu=menubar)     #Add menu bar to window
 fileMenu = Menu(menubar)       #add "File" menu to menu bar
 fileMenu.add_command(label="Open File", command=FileDialog)     #add "Open File" button to file menu
 fileMenu.add_command(label="Exit")      #Add "exit" button to file menu
+fileMenu.add_command(label="Enter ToDo list mode", command=DisplayToDoList)
 menubar.add_cascade(label="File", menu=fileMenu)    #set up file menu
 RightSideBar=tk.Canvas(Window, background="#1F1B24", height=960, width=270, bd="0", highlightthickness="0")     #create right side bar
 RightSideBar.pack(side=RIGHT)       #add right side bar to the window
