@@ -55,6 +55,8 @@ global RightSideBarBodyText
 global ExportFileType
 global SettingsDict
 global SubjectList
+global IsEarlyReleaseBuild
+global ReleaseVersion
 
 FileName = "" #String, Contains the name of the assignment sheet but not the file extension     -now unnessecary
 FileType = "" #String, format will be in a standard file extension IE: "doc", will be grabbed when file is chosen by reading it from file name      !in use
@@ -76,7 +78,10 @@ ExportFileType = "csv"
 SettingsDict = {
     
 }
+
 SubjectList = []
+IsEarlyReleaseBuild = True
+ReleaseVersion = 0.1
 #collecting launch arg data
 '''
 LaunchArgument = str(sys.argv[1])       #FIX BEFORE RELEASE! this grabs the file path passed as a launch argument
@@ -88,7 +93,7 @@ print(LaunchArgumentSubject) #output (remove in release)
 #Parsing The provided File name and subject
 
 if sys.argv.__contains__('Dev-Mode') == True:
-    IsDevModeActive = True
+    IsDevModeActive = True  
 
 #Checking that file type is supported, and that file exists
 def CheckForFile():
@@ -211,13 +216,31 @@ def LoadSavedSettings():
     IsDarkModeActive = not IsDarkModeActive
     ToggleDarkMode()
 
+def LoadBuildInfo():
+    global IsEarlyReleaseBuild
+    global ReleaseVersion
+    global IsDevModeActive
+
+    with open('Build.json', 'r') as S:
+        BuildInfo = json.load(S)
+    ReleaseVersion = value=BuildInfo["Version"]
+    IsEarlyReleaseBuild = value=BuildInfo["Is Early Release Build"]
+    print(IsEarlyReleaseBuild)
+    print(ReleaseVersion)
+    if IsEarlyReleaseBuild == True:
+        IsDevModeActive = True
+    else:
+        IsDevModeActive = False
+
 def UpdateSavedSettings():  #This saves new settings to a json file
     global SettingsDict
     global ExportFileType
     global IsDarkModeActive
+    global IsEarlyReleaseBuild
     print("Updated Settings File")
     SettingsDict["List File Type"] = ExportFileType.get()   #Adding setting to dictionary
     SettingsDict["Dark Mode"] = IsDarkModeActive    #Adding setting to dictionary
+    SettingsDict["Early Release Build"] = IsEarlyReleaseBuild
     with open('Settings.json', 'w') as S:   #opens Settings.json
         json.dump(SettingsDict, S)  #saves dictionary to json file
 def RightSideMenuExpand():  #expands right menu bar
@@ -343,6 +366,8 @@ def ExportToDoList():
     else:
         today = date.today()
         exportfilenametemp = str(today) + ".docx"
+def OpenSavedToDoList():
+    print("Open")
 def DisplayToDoList():
     print("Opening ToDo List window")
     ToDoWindow = tk.Tk()
@@ -353,6 +378,8 @@ def DisplayToDoList():
     ToDOCanvas=tk.Canvas(ToDoWindow, background="#1F1B24", width=612, height=9999, bd=0, highlightthickness="0")
     ToDOCanvas.place(x=65, y=0, relwidth=".75", relheight="1")
     PlaceHolderText = ToDOCanvas.create_text(195, 25, font=BodyFont, text="This does not fully work yet", justify=CENTER, fill="#bb86fc")
+    OpenListFileButton = tk.Button(ToDOCanvas, text="Open Saved List", command=OpenSavedToDoList, fg="#bb86fc", bg="#121212", activeforeground="#bb86fc", activebackground="#121212", width=30, height=2)
+    OpenListFileButton.pack(side=BOTTOM, fill=None)
 
     
 
@@ -402,6 +429,9 @@ DocumentText = DocumentCanvas.create_text(235, 25, font=BodyFont, text="Detected
 DocumentScrollBar = tk.Scrollbar(DocumentCanvas, bg="#bb86fc", troughcolor="#bb86fc", activebackground="#1f1f1f", command=DocumentCanvas.yview)
 DocumentScrollBar.pack(side=RIGHT, fill=Y)
 DocumentCanvas.config(yscrollcommand=DocumentScrollBar.set)
+LoadBuildInfo()
+if IsEarlyReleaseBuild == True:
+    Window.title("Lpa assignment sheet tool pre-release version " + ReleaseVersion.__str__())
 LoadSavedSettings()
 
 #Dev Menu Setup
